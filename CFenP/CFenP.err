@@ -1,0 +1,4 @@
+>>> Warning 203 "CFenP.c" Line 10(1,1): Condition always TRUE
+>>> Warning 202 "CFenP.c" Line 8(10,11): Variable never used:   i
+      Memory usage:   ROM=2%      RAM=2% - 2%
+      0 Errors,  2 Warnings.

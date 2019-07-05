@@ -1,0 +1,29 @@
+ÀÄRatoncySum
+   ÃÄMAIN  0/54  Ram=1
+   ³  ÃÄ??0??
+   ³  ÀÄ@delay_ms1  0/20  Ram=1
+   ÃÄserial_isr  0/14  Ram=0
+   ÀÄisr_timer1  0/200  Ram=0
+      ÃÄlinia  0/46  Ram=0
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÀÄ@delay_ms1  0/20  Ram=1
+      ÃÄulls  0/32  Ram=0
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÀÄ@delay_ms1  0/20  Ram=1
+      ÃÄlinia  0/46  Ram=0
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÀÄ@delay_ms1  0/20  Ram=1
+      ÃÄulls  0/32  Ram=0
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÀÄ@delay_ms1  0/20  Ram=1
+      ÀÄlinia  0/46  Ram=0
+         ÃÄ@delay_ms1  0/20  Ram=1
+         ÃÄ@delay_ms1  0/20  Ram=1
+         ÃÄ@delay_ms1  0/20  Ram=1
+         ÀÄ@delay_ms1  0/20  Ram=1

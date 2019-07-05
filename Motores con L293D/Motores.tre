@@ -1,0 +1,21 @@
+ÀÄMotores
+   ÃÄMAIN  0/60  Ram=0
+   ³  ÀÄ??0??
+   ÃÄRTCC_isr  0/23  Ram=0
+   ÀÄserial_isr  0/152  Ram=1
+      ÃÄ@const68  0/11  Ram=0
+      ÃÄ@PRINTF_U_9600_62_63  0/56  Ram=2
+      ³  ÃÄ@DIV88  0/21  Ram=3
+      ³  ÀÄ@DIV88  0/21  Ram=3
+      ÃÄ@const68  0/11  Ram=0
+      ÃÄ@PRINTF_U_9600_62_63  0/56  Ram=2
+      ³  ÃÄ@DIV88  0/21  Ram=3
+      ³  ÀÄ@DIV88  0/21  Ram=3
+      ÃÄ@const68  0/11  Ram=0
+      ÃÄ@PRINTF_U_9600_62_63  0/56  Ram=2
+      ³  ÃÄ@DIV88  0/21  Ram=3
+      ³  ÀÄ@DIV88  0/21  Ram=3
+      ÃÄ@const68  0/11  Ram=0
+      ÀÄ@PRINTF_U_9600_62_63  0/56  Ram=2
+         ÃÄ@DIV88  0/21  Ram=3
+         ÀÄ@DIV88  0/21  Ram=3

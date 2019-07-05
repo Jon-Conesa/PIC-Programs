@@ -1,0 +1,640 @@
+CCS PCM C Compiler, Version 4.088, 5967               26-ago.-17 21:14
+
+               Filename: C:\Users\RR JC\Desktop\Programs\Servo con interrupt\Servo.lst
+
+               ROM used: 433 words (5%)
+                         Largest free fragment is 2048
+               RAM used: 16 (4%) at main() level
+                         16 (4%) worst case
+               Stack:    2 worst case (0 in main + 2 for interrupts)
+
+*
+0000:  MOVLW  01
+0001:  MOVWF  0A
+0002:  GOTO   192
+0003:  NOP
+0004:  MOVWF  7F
+0005:  SWAPF  03,W
+0006:  CLRF   03
+0007:  MOVWF  21
+0008:  MOVF   0A,W
+0009:  MOVWF  20
+000A:  CLRF   0A
+000B:  MOVF   04,W
+000C:  MOVWF  22
+000D:  MOVF   77,W
+000E:  MOVWF  23
+000F:  MOVF   78,W
+0010:  MOVWF  24
+0011:  MOVF   79,W
+0012:  MOVWF  25
+0013:  MOVF   7A,W
+0014:  MOVWF  26
+0015:  MOVF   7B,W
+0016:  MOVWF  27
+0017:  BCF    03.7
+0018:  BCF    03.5
+0019:  MOVLW  8C
+001A:  MOVWF  04
+001B:  BTFSS  00.5
+001C:  GOTO   01F
+001D:  BTFSC  0C.5
+001E:  GOTO   038
+001F:  MOVLW  8C
+0020:  MOVWF  04
+0021:  BTFSS  00.0
+0022:  GOTO   025
+0023:  BTFSC  0C.0
+0024:  GOTO   03B
+0025:  MOVF   22,W
+0026:  MOVWF  04
+0027:  MOVF   23,W
+0028:  MOVWF  77
+0029:  MOVF   24,W
+002A:  MOVWF  78
+002B:  MOVF   25,W
+002C:  MOVWF  79
+002D:  MOVF   26,W
+002E:  MOVWF  7A
+002F:  MOVF   27,W
+0030:  MOVWF  7B
+0031:  MOVF   20,W
+0032:  MOVWF  0A
+0033:  SWAPF  21,W
+0034:  MOVWF  03
+0035:  SWAPF  7F,F
+0036:  SWAPF  7F,W
+0037:  RETFIE
+0038:  BCF    0A.3
+0039:  BCF    0A.4
+003A:  GOTO   184
+003B:  BCF    0A.3
+003C:  BCF    0A.4
+003D:  GOTO   03E
+.................... #include <16f877.h>                    // Selecciona el PIC 
+.................... //////// Standard Header file for the PIC16F877 device //////////////// 
+.................... #device PIC16F877 
+.................... #list 
+....................  
+.................... #fuses XT,NOWDT,NOPROTECT,PUT,BROWNOUT // Opciones de configuración 
+.................... #use delay(clock=20000000)              // Velocidad del Cristal : 20 Mhz 
+.................... #use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7) // Definición del RS232 
+....................  
+....................  
+.................... int movimiento = 2;     
+*
+01A3:  MOVLW  02
+01A4:  BCF    03.5
+01A5:  MOVWF  28
+.................... int aux=0;                      
+01A6:  CLRF   29
+....................  
+.................... #INT_TIMER1 
+.................... void isr_timer1(){ 
+....................  
+.................... switch(movimiento){ 
+*
+003E:  MOVF   28,W
+003F:  ADDLW  F7
+0040:  BTFSC  03.0
+0041:  GOTO   173
+0042:  ADDLW  09
+0043:  GOTO   177
+....................          case 0:                        // endavant 
+....................             switch(aux){ 
+0044:  MOVF   29,W
+0045:  BTFSC  03.2
+0046:  GOTO   04E
+0047:  XORLW  01
+0048:  BTFSC  03.2
+0049:  GOTO   05C
+004A:  XORLW  03
+004B:  BTFSC  03.2
+004C:  GOTO   066
+004D:  GOTO   070
+....................                case 0:                    // si aux es 0 va endavant 
+....................                 
+....................                output_high(PIN_B2);       // fem un high als dos durant 0,5 ms 
+004E:  BSF    03.5
+004F:  BCF    06.2
+0050:  BCF    03.5
+0051:  BSF    06.2
+....................                output_high(PIN_B1); 
+0052:  BSF    03.5
+0053:  BCF    06.1
+0054:  BCF    03.5
+0055:  BSF    06.1
+....................                set_timer1(65223);          
+0056:  MOVLW  FE
+0057:  MOVWF  0F
+0058:  MOVLW  C7
+0059:  MOVWF  0E
+....................                aux++;                     // cambien l'estat de l'auxiliar 
+005A:  INCF   29,F
+....................                break; 
+005B:  GOTO   070
+....................                
+....................               case 1: 
+....................                output_low(PIN_B2);        // un low al connectat al B2 durant 2 ms 
+005C:  BSF    03.5
+005D:  BCF    06.2
+005E:  BCF    03.5
+005F:  BCF    06.2
+....................                set_timer1(64286); 
+0060:  MOVLW  FB
+0061:  MOVWF  0F
+0062:  MOVLW  1E
+0063:  MOVWF  0E
+....................                aux++; 
+0064:  INCF   29,F
+....................                break; 
+0065:  GOTO   070
+....................                 
+....................                case 2:                    // quan cambia l'estat de l'auxiliar 
+....................                output_low(PIN_B1);        // es baixa l'estat de l'altre durant 17,5 ms 
+0066:  BSF    03.5
+0067:  BCF    06.1
+0068:  BCF    03.5
+0069:  BCF    06.1
+....................                set_timer1(54598);         
+006A:  MOVLW  D5
+006B:  MOVWF  0F
+006C:  MOVLW  46
+006D:  MOVWF  0E
+....................                aux=0; 
+006E:  CLRF   29
+....................                break; 
+006F:  GOTO   070
+....................             } 
+....................              break;   
+0070:  GOTO   173
+....................            
+....................           case 1:                         // aquesta funcio realitzaria un fre actiu (no usat al programa) 
+....................                switch(aux){ 
+0071:  MOVF   29,W
+0072:  BTFSC  03.2
+0073:  GOTO   07B
+0074:  XORLW  01
+0075:  BTFSC  03.2
+0076:  GOTO   089
+0077:  XORLW  03
+0078:  BTFSC  03.2
+0079:  GOTO   097
+007A:  GOTO   0A5
+....................                case 0: 
+....................                output_high(PIN_B2); 
+007B:  BSF    03.5
+007C:  BCF    06.2
+007D:  BCF    03.5
+007E:  BSF    06.2
+....................                output_high(PIN_B1); 
+007F:  BSF    03.5
+0080:  BCF    06.1
+0081:  BCF    03.5
+0082:  BSF    06.1
+....................                set_timer1(64598); 
+0083:  MOVLW  FC
+0084:  MOVWF  0F
+0085:  MOVLW  56
+0086:  MOVWF  0E
+....................                aux++; 
+0087:  INCF   29,F
+....................                break; 
+0088:  GOTO   0A5
+....................                 
+....................                case 1: 
+....................                output_low(PIN_B2); 
+0089:  BSF    03.5
+008A:  BCF    06.2
+008B:  BCF    03.5
+008C:  BCF    06.2
+....................                output_low(PIN_B1); 
+008D:  BSF    03.5
+008E:  BCF    06.1
+008F:  BCF    03.5
+0090:  BCF    06.1
+....................                set_timer1(53973); 
+0091:  MOVLW  D2
+0092:  MOVWF  0F
+0093:  MOVLW  D5
+0094:  MOVWF  0E
+....................                aux=0; 
+0095:  CLRF   29
+....................                break; 
+0096:  GOTO   0A5
+....................                 
+....................                case 2:                    // en cas de que l'auxiliar sigui 2 fara el mateix que si fos 1 
+....................                output_low(PIN_B2); 
+0097:  BSF    03.5
+0098:  BCF    06.2
+0099:  BCF    03.5
+009A:  BCF    06.2
+....................                output_low(PIN_B1); 
+009B:  BSF    03.5
+009C:  BCF    06.1
+009D:  BCF    03.5
+009E:  BCF    06.1
+....................                set_timer1(53973); 
+009F:  MOVLW  D2
+00A0:  MOVWF  0F
+00A1:  MOVLW  D5
+00A2:  MOVWF  0E
+....................                aux=0; 
+00A3:  CLRF   29
+....................                break; 
+00A4:  GOTO   0A5
+....................                } 
+....................                 
+....................              break;   
+00A5:  GOTO   173
+....................            case 2:                        // enrere 
+....................                switch(aux){ 
+00A6:  MOVF   29,W
+00A7:  BTFSC  03.2
+00A8:  GOTO   0B0
+00A9:  XORLW  01
+00AA:  BTFSC  03.2
+00AB:  GOTO   0BE
+00AC:  XORLW  03
+00AD:  BTFSC  03.2
+00AE:  GOTO   0C8
+00AF:  GOTO   0D2
+....................                case 0:                    // si aux es 0 va endavant 
+....................                output_high(PIN_B2);       // fem un high als dos durant 0,5 ms 
+00B0:  BSF    03.5
+00B1:  BCF    06.2
+00B2:  BCF    03.5
+00B3:  BSF    06.2
+....................                output_high(PIN_B1); 
+00B4:  BSF    03.5
+00B5:  BCF    06.1
+00B6:  BCF    03.5
+00B7:  BSF    06.1
+....................                set_timer1(65223);          
+00B8:  MOVLW  FE
+00B9:  MOVWF  0F
+00BA:  MOVLW  C7
+00BB:  MOVWF  0E
+....................                aux++;                     // cambien l'estat de l'auxiliar 
+00BC:  INCF   29,F
+....................                break; 
+00BD:  GOTO   0D2
+....................                
+....................               case 1: 
+....................                output_low(PIN_B1);        // un low al connectat al B1 durant 2 ms 
+00BE:  BSF    03.5
+00BF:  BCF    06.1
+00C0:  BCF    03.5
+00C1:  BCF    06.1
+....................                set_timer1(64286); 
+00C2:  MOVLW  FB
+00C3:  MOVWF  0F
+00C4:  MOVLW  1E
+00C5:  MOVWF  0E
+....................                aux++; 
+00C6:  INCF   29,F
+....................                break; 
+00C7:  GOTO   0D2
+....................                 
+....................                case 2:                    // quan cambia l'estat de l'auxiliar 
+....................                output_low(PIN_B2);        // es baixa l'estat de l'altre durant 17,5 ms 
+00C8:  BSF    03.5
+00C9:  BCF    06.2
+00CA:  BCF    03.5
+00CB:  BCF    06.2
+....................                set_timer1(54598);         // durant 17,5 ms 
+00CC:  MOVLW  D5
+00CD:  MOVWF  0F
+00CE:  MOVLW  46
+00CF:  MOVWF  0E
+....................                aux=0; 
+00D0:  CLRF   29
+....................                break; 
+00D1:  GOTO   0D2
+....................             } 
+....................             break; 
+00D2:  GOTO   173
+....................              
+....................              case 5:                      // per fer la parada simplement no donarem senyal als motors 
+....................                output_low(PIN_B2); 
+00D3:  BSF    03.5
+00D4:  BCF    06.2
+00D5:  BCF    03.5
+00D6:  BCF    06.2
+....................                output_low(PIN_B1); 
+00D7:  BSF    03.5
+00D8:  BCF    06.1
+00D9:  BCF    03.5
+00DA:  BCF    06.1
+....................                break; 
+00DB:  GOTO   173
+....................                 
+....................              case 6:                      // es realitza un gir per a buscar el robot contrari 
+....................                 
+....................                   switch(aux){ 
+00DC:  MOVF   29,W
+00DD:  BTFSC  03.2
+00DE:  GOTO   0E6
+00DF:  XORLW  01
+00E0:  BTFSC  03.2
+00E1:  GOTO   0F4
+00E2:  XORLW  03
+00E3:  BTFSC  03.2
+00E4:  GOTO   0FE
+00E5:  GOTO   108
+....................                      case 0: 
+....................                      output_high(PIN_B2);          // els dos servos hauran de girar en el mateix sentit 
+00E6:  BSF    03.5
+00E7:  BCF    06.2
+00E8:  BCF    03.5
+00E9:  BSF    06.2
+....................                      output_high(PIN_B1); 
+00EA:  BSF    03.5
+00EB:  BCF    06.1
+00EC:  BCF    03.5
+00ED:  BSF    06.1
+....................                      set_timer1(65223);            // enviem una senyal de 0,5 ms a tots dos 
+00EE:  MOVLW  FE
+00EF:  MOVWF  0F
+00F0:  MOVLW  C7
+00F1:  MOVWF  0E
+....................                      aux++; 
+00F2:  INCF   29,F
+....................                      break; 
+00F3:  GOTO   108
+....................                 
+....................                      case 1: 
+....................                      output_low(PIN_B2);           // mantenim la senyal al pin_b1 durant aproximadament 1 ms 
+00F4:  BSF    03.5
+00F5:  BCF    06.2
+00F6:  BCF    03.5
+00F7:  BCF    06.2
+....................                      set_timer1(64900);            // d'aquesta manera una roda gira i l'altre es mant? fixa permeten abarcar mes rang de deteccion 
+00F8:  MOVLW  FD
+00F9:  MOVWF  0F
+00FA:  MOVLW  84
+00FB:  MOVWF  0E
+....................                      aux=0; 
+00FC:  CLRF   29
+....................                      break; 
+00FD:  GOTO   108
+....................                      case 2:                        
+....................                      output_low(PIN_B1); 
+00FE:  BSF    03.5
+00FF:  BCF    06.1
+0100:  BCF    03.5
+0101:  BCF    06.1
+....................                      set_timer1(53973);            // la resta de temps (18,5 ms) mantenim la senyal en low 
+0102:  MOVLW  D2
+0103:  MOVWF  0F
+0104:  MOVLW  D5
+0105:  MOVWF  0E
+....................                      aux=0; 
+0106:  CLRF   29
+....................                      break; 
+0107:  GOTO   108
+....................                      } 
+....................                   break; 
+0108:  GOTO   173
+....................                  case 7:                           // un gir en el sentit contrari 
+....................                      switch(aux){ 
+0109:  MOVF   29,W
+010A:  BTFSC  03.2
+010B:  GOTO   113
+010C:  XORLW  01
+010D:  BTFSC  03.2
+010E:  GOTO   121
+010F:  XORLW  03
+0110:  BTFSC  03.2
+0111:  GOTO   12F
+0112:  GOTO   13D
+....................                      case 0: 
+....................                      output_high(PIN_B2);          // els dos servos hauran de girar en el mateix sentit 
+0113:  BSF    03.5
+0114:  BCF    06.2
+0115:  BCF    03.5
+0116:  BSF    06.2
+....................                      output_high(PIN_B1); 
+0117:  BSF    03.5
+0118:  BCF    06.1
+0119:  BCF    03.5
+011A:  BSF    06.1
+....................                      set_timer1(65223);            // enviem una senyal de 0,5 ms a tots dos 
+011B:  MOVLW  FE
+011C:  MOVWF  0F
+011D:  MOVLW  C7
+011E:  MOVWF  0E
+....................                      aux++; 
+011F:  INCF   29,F
+....................                      break; 
+0120:  GOTO   13D
+....................                 
+....................                      case 1: 
+....................                      output_low(PIN_B2);           // la resta (19,5 ms) estaran en estat baix 
+0121:  BSF    03.5
+0122:  BCF    06.2
+0123:  BCF    03.5
+0124:  BCF    06.2
+....................                      output_low(PIN_B1); 
+0125:  BSF    03.5
+0126:  BCF    06.1
+0127:  BCF    03.5
+0128:  BCF    06.1
+....................                      set_timer1(53348); 
+0129:  MOVLW  D0
+012A:  MOVWF  0F
+012B:  MOVLW  64
+012C:  MOVWF  0E
+....................                      aux=0; 
+012D:  CLRF   29
+....................                      break; 
+012E:  GOTO   13D
+....................                      case 2:                       // cap la possibilitat que aux=2 quan entri en aquest cas, per aixo es repeteix la comanda 
+....................                      output_low(PIN_B2);           // la resta (19,5 ms) estaran en estat baix 
+012F:  BSF    03.5
+0130:  BCF    06.2
+0131:  BCF    03.5
+0132:  BCF    06.2
+....................                      output_low(PIN_B1); 
+0133:  BSF    03.5
+0134:  BCF    06.1
+0135:  BCF    03.5
+0136:  BCF    06.1
+....................                      set_timer1(53348); 
+0137:  MOVLW  D0
+0138:  MOVWF  0F
+0139:  MOVLW  64
+013A:  MOVWF  0E
+....................                      aux=0; 
+013B:  CLRF   29
+....................                      break; 
+013C:  GOTO   13D
+....................                      } 
+....................                      break; 
+013D:  GOTO   173
+....................                       
+....................                   case 8:                         // gir en l'altre sentit 
+....................                      switch(aux){ 
+013E:  MOVF   29,W
+013F:  BTFSC  03.2
+0140:  GOTO   148
+0141:  XORLW  01
+0142:  BTFSC  03.2
+0143:  GOTO   156
+0144:  XORLW  03
+0145:  BTFSC  03.2
+0146:  GOTO   164
+0147:  GOTO   172
+....................                      case 0: 
+....................                      output_high(PIN_B2);          // els dos servos hauran de girar en el mateix sentit 
+0148:  BSF    03.5
+0149:  BCF    06.2
+014A:  BCF    03.5
+014B:  BSF    06.2
+....................                      output_high(PIN_B1); 
+014C:  BSF    03.5
+014D:  BCF    06.1
+014E:  BCF    03.5
+014F:  BSF    06.1
+....................                      set_timer1(63973);            // enviem una senyal de 2,5 ms a tots dos 
+0150:  MOVLW  F9
+0151:  MOVWF  0F
+0152:  MOVLW  E5
+0153:  MOVWF  0E
+....................                      aux++; 
+0154:  INCF   29,F
+....................                      break; 
+0155:  GOTO   172
+....................                 
+....................                      case 1: 
+....................                      output_low(PIN_B2);           // la resta (17,5 ms) estaran en estat baix 
+0156:  BSF    03.5
+0157:  BCF    06.2
+0158:  BCF    03.5
+0159:  BCF    06.2
+....................                      output_low(PIN_B1); 
+015A:  BSF    03.5
+015B:  BCF    06.1
+015C:  BCF    03.5
+015D:  BCF    06.1
+....................                      set_timer1(54598); 
+015E:  MOVLW  D5
+015F:  MOVWF  0F
+0160:  MOVLW  46
+0161:  MOVWF  0E
+....................                      aux=0; 
+0162:  CLRF   29
+....................                      break; 
+0163:  GOTO   172
+....................                      case 2:                       // el mateix que en el cas anterior 
+....................                      output_low(PIN_B2);           // la resta (17,5 ms) estaran en estat baix 
+0164:  BSF    03.5
+0165:  BCF    06.2
+0166:  BCF    03.5
+0167:  BCF    06.2
+....................                      output_low(PIN_B1); 
+0168:  BSF    03.5
+0169:  BCF    06.1
+016A:  BCF    03.5
+016B:  BCF    06.1
+....................                      set_timer1(54598); 
+016C:  MOVLW  D5
+016D:  MOVWF  0F
+016E:  MOVLW  46
+016F:  MOVWF  0E
+....................                      aux=0; 
+0170:  CLRF   29
+....................                      break; 
+0171:  GOTO   172
+....................                   } 
+....................                   break; 
+0172:  GOTO   173
+....................                } 
+....................     
+....................     
+.................... } 
+....................  
+0173:  BCF    0C.0
+0174:  BCF    0A.3
+0175:  BCF    0A.4
+0176:  GOTO   025
+.................... #int_rda 
+.................... void serial_isr() { 
+....................   if(kbhit()){ 
+*
+0184:  BTFSS  0C.5
+0185:  GOTO   18E
+....................     movimiento=getc(); 
+0186:  BTFSS  0C.5
+0187:  GOTO   186
+0188:  MOVF   1A,W
+0189:  MOVWF  28
+....................      
+....................     putchar(movimiento); 
+018A:  MOVF   28,W
+018B:  BTFSS  0C.4
+018C:  GOTO   18B
+018D:  MOVWF  19
+....................        
+....................     } 
+....................     
+....................     
+....................   } 
+....................    
+....................  
+....................  
+....................                                      
+....................  
+....................  
+....................  
+018E:  BCF    0C.5
+018F:  BCF    0A.3
+0190:  BCF    0A.4
+0191:  GOTO   025
+.................... void main(void) { 
+0192:  CLRF   04
+0193:  BCF    03.7
+0194:  MOVLW  1F
+0195:  ANDWF  03,F
+0196:  MOVLW  81
+0197:  BSF    03.5
+0198:  MOVWF  19
+0199:  MOVLW  A6
+019A:  MOVWF  18
+019B:  MOVLW  90
+019C:  BCF    03.5
+019D:  MOVWF  18
+019E:  BSF    03.5
+019F:  BSF    1F.0
+01A0:  BSF    1F.1
+01A1:  BSF    1F.2
+01A2:  BCF    1F.3
+....................   setup_timer_1(T1_INTERNAL|T1_DIV_BY_8);  
+*
+01A7:  MOVLW  B5
+01A8:  MOVWF  10
+....................   enable_interrupts(int_rda); 
+01A9:  BSF    03.5
+01AA:  BSF    0C.5
+....................   enable_interrupts(INT_TIMER1); 
+01AB:  BSF    0C.0
+....................   enable_interrupts(global);                  
+01AC:  MOVLW  C0
+01AD:  BCF    03.5
+01AE:  IORWF  0B,F
+....................  
+....................  
+....................  
+....................   do{ // Bucle infinito 
+....................  
+....................     
+....................     
+....................  
+....................   }While(TRUE); 
+.................... } 
+01AF:  GOTO   1AF
+....................  
+01B0:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F71   XT NOWDT PUT NOPROTECT BROWNOUT NOLVP NOCPD NOWRT NODEBUG

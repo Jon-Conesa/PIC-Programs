@@ -1,0 +1,4 @@
+>>> Warning 203 "RatoncySum.c" Line 157(1,1): Condition always TRUE
+>>> Warning 216 "RatoncySum.c" Line 162(0,1): Interrupts disabled during call to prevent re-entrancy:  (@delay_ms1)
+      Memory usage:   ROM=5%      RAM=6% - 7%
+      0 Errors,  2 Warnings.

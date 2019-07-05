@@ -1,0 +1,270 @@
+#include <16F877.h>
+#fuses HS,NOWDT,NOPROTECT,NOLVP
+#use delay(clock=20000000)
+#define DELAY_COUNTER_VALUE    10000
+#define ZERO  0b00111111
+#define UNO  0b00000110
+#define DOS  0b01011011
+#define TRES  0b01001111
+#define CUATRO  0b01100110
+#define CINCO  0b01101101
+#define SEIS  0b01111101
+#define SIETE  0b00000111
+#define OCHO  0b01111111
+#define NUEVE  0b01100111
+
+
+
+
+void main(void)
+{
+int16 x = 1;
+int i;
+int num[10] = {ZERO,UNO,DOS,TRES,CUATRO,CINCO,SEIS,SIETE,OCHO,NUEVE};
+set_tris_d(0x00);
+set_tris_b(0x00);
+set_tris_a(0x00);
+set_tris_c(0x00);
+//set_tris_c(0xff);
+
+
+while(1){
+//x = input(PIN_C5);
+
+   while(x==1){
+   if(input(PIN_A4)== 1){
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(ZERO);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(UNO);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(DOS);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(TRES);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(CUATRO);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(CINCO);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(SEIS);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(SIETE);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(OCHO);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(NUEVE);
+      delay_ms(10);
+      
+   }
+   
+   
+  
+
+}
+else{
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(NUEVE);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(OCHO);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(SIETE);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(SEIS);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(CINCO);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(CUATRO);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(TRES);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(DOS);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(UNO);
+      delay_ms(10);
+      
+   }
+   for(i=0;i<50;i++){
+      output_LOW(PIN_C1);
+      output_HIGH(PIN_C0);
+      output_d(ZERO);
+      delay_ms(10);
+      output_LOW(PIN_C0);
+      output_HIGH(PIN_C1);
+      output_d(ZERO);
+      delay_ms(10);
+      
+   }
+   
+}
+
+
+}
+}
+}
+
+

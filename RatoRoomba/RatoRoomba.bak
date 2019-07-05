@@ -1,0 +1,66 @@
+#include <16f877.h>                    // Selecciona el PIC
+#fuses XT,NOWDT,NOPROTECT,PUT,BROWNOUT // Opciones de configuraci?n
+#use delay(clock=20000000)              // Velocidad del Cristal : 20 Mhz
+#use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7) // Definici?n del RS232
+
+
+char opcio;    
+int aux=0;                     
+
+#INT_TIMER1
+void isr_timer1(){
+
+switch(opcio){
+   case 'a': 
+      switch(aux){
+         case 0:
+            output_high(PIN_B1);
+            output_high(PIN_B2);
+            set_timer1(63973);
+            aux=1;
+            break;
+         
+         case 1:
+            output_low(PIN_B1);
+            output_low(PIN_B2);
+            set_timer1(54598);
+            aux=0;
+            break;
+      }
+      case 's':
+      switch(aux){
+         case 0:
+            output_high(PIN_B1);
+            output_high(PIN_B2);
+            set_timer1(65223);
+            aux=1;
+            break;
+         
+         case 1:
+            output_low(PIN_B1);
+            output_low(PIN_B2);
+            set_timer1(53348);
+            aux=0;
+            break;
+      }
+      case 'd':
+      switch(aux){
+         case 0:
+            output_high(PIN_B1);
+            output_higadh(PIN_B2);
+            set_timer1(64598);
+            aux=1;
+            break;
+         
+         case 1:
+            output_low(PIN_B1);
+            output_low(PIN_B2);
+            set_timer1(53973);
+            aux=0;
+            break;
+      }
+   break;
+   }
+   
+   
+}

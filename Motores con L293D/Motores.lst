@@ -1,0 +1,414 @@
+CCS PCM C Compiler, Version 4.088, 5967               17-jul-17 13:59
+
+               Filename: C:\Users\Administrator\Desktop\Programs\Motores con L293D\Motores.lst
+
+               ROM used: 383 words (5%)
+                         Largest free fragment is 2048
+               RAM used: 23 (6%) at main() level
+                         28 (8%) worst case
+               Stack:    3 worst case (0 in main + 3 for interrupts)
+
+*
+0000:  MOVLW  01
+0001:  MOVWF  0A
+0002:  GOTO   143
+0003:  NOP
+0004:  MOVWF  7F
+0005:  SWAPF  03,W
+0006:  CLRF   03
+0007:  MOVWF  21
+0008:  MOVF   0A,W
+0009:  MOVWF  20
+000A:  CLRF   0A
+000B:  MOVF   04,W
+000C:  MOVWF  22
+000D:  MOVF   77,W
+000E:  MOVWF  23
+000F:  MOVF   78,W
+0010:  MOVWF  24
+0011:  MOVF   79,W
+0012:  MOVWF  25
+0013:  MOVF   7A,W
+0014:  MOVWF  26
+0015:  MOVF   7B,W
+0016:  MOVWF  27
+0017:  BCF    03.7
+0018:  BCF    03.5
+0019:  BTFSS  0B.5
+001A:  GOTO   01D
+001B:  BTFSC  0B.2
+001C:  GOTO   036
+001D:  MOVLW  8C
+001E:  MOVWF  04
+001F:  BTFSS  00.5
+0020:  GOTO   023
+0021:  BTFSC  0C.5
+0022:  GOTO   039
+0023:  MOVF   22,W
+0024:  MOVWF  04
+0025:  MOVF   23,W
+0026:  MOVWF  77
+0027:  MOVF   24,W
+0028:  MOVWF  78
+0029:  MOVF   25,W
+002A:  MOVWF  79
+002B:  MOVF   26,W
+002C:  MOVWF  7A
+002D:  MOVF   27,W
+002E:  MOVWF  7B
+002F:  MOVF   20,W
+0030:  MOVWF  0A
+0031:  SWAPF  21,W
+0032:  MOVWF  03
+0033:  SWAPF  7F,F
+0034:  SWAPF  7F,W
+0035:  RETFIE
+0036:  BCF    0A.3
+0037:  BCF    0A.4
+0038:  GOTO   047
+0039:  BCF    0A.3
+003A:  BCF    0A.4
+003B:  GOTO   0AB
+.................... #include <16f877.h>                    // Selecciona el PIC 
+.................... //////// Standard Header file for the PIC16F877 device //////////////// 
+.................... #device PIC16F877 
+.................... #list 
+....................  
+.................... #fuses XT,NOWDT,NOPROTECT,PUT,BROWNOUT // Opciones de configuración 
+.................... #use delay(clock=20000000)              // Velocidad del Cristal : 4 Mhz 
+.................... #use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7) // Definición del RS232 
+.................... char Keypress=' '; 
+*
+0154:  MOVLW  20
+0155:  BCF    03.5
+0156:  MOVWF  28
+.................... byte const NInts=153;                   // Numero de interrupciones para 1 Segundo (CALCULADLO)!!!!!!!! 
+....................  
+....................  
+.................... int16 C_Ints=0;                         // Contador de Interrupciones ocurridas 
+0157:  CLRF   29
+0158:  CLRF   2A
+.................... char Flag=0;       
+0159:  CLRF   2B
+.................... int contador = 0;   
+015A:  CLRF   2C
+....................  
+.................... int x = 1;           // Flag que cambia cada NInts interrupciones 
+015B:  MOVLW  01
+015C:  MOVWF  2D
+.................... int v = 0; 
+015D:  CLRF   2E
+.................... int vel; 
+....................  
+....................  
+.................... #int_RTCC                              // Interrupción por desbordamiento 
+.................... void RTCC_isr() {                           // del TIMER0 RTCC 
+....................  
+....................   if(C_Ints > NInts){                  // Si las ints ocurridas > ints para 1 Seg. 
+*
+0047:  MOVF   2A,F
+0048:  BTFSS  03.2
+0049:  GOTO   04E
+004A:  MOVF   29,W
+004B:  SUBLW  99
+004C:  BTFSC  03.0
+004D:  GOTO   057
+....................  
+....................     if(Flag==0){ 
+004E:  MOVF   2B,F
+004F:  BTFSS  03.2
+0050:  GOTO   054
+....................       Flag=1; 
+0051:  MOVLW  01
+0052:  MOVWF  2B
+....................     } 
+....................     else{ 
+0053:  GOTO   055
+....................       Flag=0; 
+0054:  CLRF   2B
+....................     } 
+....................     C_Ints=0;                          // Reinicializo Contador de Ints 
+0055:  CLRF   2A
+0056:  CLRF   29
+....................   } 
+....................   ++C_Ints;                            // Incremento el número de interrupciones 
+0057:  INCF   29,F
+0058:  BTFSC  03.2
+0059:  INCF   2A,F
+.................... }                                      // Ocurridas 
+....................  
+005A:  BCF    0B.2
+005B:  BCF    0A.3
+005C:  BCF    0A.4
+005D:  GOTO   023
+.................... #int_rda 
+.................... void serial_isr() { 
+....................  
+....................   Keypress=0x00; 
+*
+00AB:  CLRF   28
+....................   if(kbhit()){ 
+00AC:  BTFSS  0C.5
+00AD:  GOTO   13F
+....................     Keypress=getc(); 
+00AE:  BTFSS  0C.5
+00AF:  GOTO   0AE
+00B0:  MOVF   1A,W
+00B1:  MOVWF  28
+....................     if(Keypress!=0x00){ 
+00B2:  MOVF   28,F
+00B3:  BTFSC  03.2
+00B4:  GOTO   13F
+....................      
+....................      
+....................     if(Keypress == 'w'){ 
+00B5:  MOVF   28,W
+00B6:  SUBLW  77
+00B7:  BTFSS  03.2
+00B8:  GOTO   0F2
+....................       output_high(PIN_D0); 
+00B9:  BSF    03.5
+00BA:  BCF    08.0
+00BB:  BCF    03.5
+00BC:  BSF    08.0
+....................       output_low(PIN_D1); 
+00BD:  BSF    03.5
+00BE:  BCF    08.1
+00BF:  BCF    03.5
+00C0:  BCF    08.1
+....................       set_pwm1_duty(vel); 
+00C1:  MOVF   2F,W
+00C2:  MOVWF  15
+....................       printf("vel:%u",vel); 
+00C3:  CLRF   31
+00C4:  MOVF   31,W
+00C5:  CALL   03C
+00C6:  INCF   31,F
+00C7:  MOVWF  77
+00C8:  MOVF   77,W
+00C9:  BTFSS  0C.4
+00CA:  GOTO   0C9
+00CB:  MOVWF  19
+00CC:  MOVLW  04
+00CD:  SUBWF  31,W
+00CE:  BTFSS  03.2
+00CF:  GOTO   0C4
+00D0:  MOVF   2F,W
+00D1:  MOVWF  31
+00D2:  MOVLW  1B
+00D3:  MOVWF  32
+00D4:  CALL   073
+....................       vel=vel-15; 
+00D5:  MOVLW  0F
+00D6:  SUBWF  2F,F
+....................           set_pwm1_duty(vel); 
+00D7:  MOVF   2F,W
+00D8:  MOVWF  15
+....................           printf("vel:%u",vel); 
+00D9:  CLRF   31
+00DA:  MOVF   31,W
+00DB:  CALL   03C
+00DC:  INCF   31,F
+00DD:  MOVWF  77
+00DE:  MOVF   77,W
+00DF:  BTFSS  0C.4
+00E0:  GOTO   0DF
+00E1:  MOVWF  19
+00E2:  MOVLW  04
+00E3:  SUBWF  31,W
+00E4:  BTFSS  03.2
+00E5:  GOTO   0DA
+00E6:  MOVF   2F,W
+00E7:  MOVWF  31
+00E8:  MOVLW  1B
+00E9:  MOVWF  32
+00EA:  CALL   073
+....................           if(vel<=0){ 
+00EB:  MOVF   2F,F
+00EC:  BTFSS  03.2
+00ED:  GOTO   0F2
+....................           vel=125; 
+00EE:  MOVLW  7D
+00EF:  MOVWF  2F
+....................           set_pwm1_duty(vel); 
+00F0:  MOVF   2F,W
+00F1:  MOVWF  15
+....................           } 
+....................          
+....................       } 
+....................      
+....................     if(Keypress == 'a'){ 
+00F2:  MOVF   28,W
+00F3:  SUBLW  61
+00F4:  BTFSS  03.2
+00F5:  GOTO   12E
+....................           output_high(PIN_D0); 
+00F6:  BSF    03.5
+00F7:  BCF    08.0
+00F8:  BCF    03.5
+00F9:  BSF    08.0
+....................           output_low(PIN_D1); 
+00FA:  BSF    03.5
+00FB:  BCF    08.1
+00FC:  BCF    03.5
+00FD:  BCF    08.1
+....................          set_pwm1_duty(vel); 
+00FE:  MOVF   2F,W
+00FF:  MOVWF  15
+....................           printf("vel:%u",vel); 
+0100:  CLRF   31
+0101:  MOVF   31,W
+0102:  CALL   03C
+0103:  INCF   31,F
+0104:  MOVWF  77
+0105:  MOVF   77,W
+0106:  BTFSS  0C.4
+0107:  GOTO   106
+0108:  MOVWF  19
+0109:  MOVLW  04
+010A:  SUBWF  31,W
+010B:  BTFSS  03.2
+010C:  GOTO   101
+010D:  MOVF   2F,W
+010E:  MOVWF  31
+010F:  MOVLW  1B
+0110:  MOVWF  32
+0111:  CALL   073
+....................           vel=vel+15; 
+0112:  MOVLW  0F
+0113:  ADDWF  2F,F
+....................          set_pwm1_duty(vel); 
+0114:  MOVF   2F,W
+0115:  MOVWF  15
+....................          printf("vel:%u",vel); 
+0116:  CLRF   31
+0117:  MOVF   31,W
+0118:  CALL   03C
+0119:  INCF   31,F
+011A:  MOVWF  77
+011B:  MOVF   77,W
+011C:  BTFSS  0C.4
+011D:  GOTO   11C
+011E:  MOVWF  19
+011F:  MOVLW  04
+0120:  SUBWF  31,W
+0121:  BTFSS  03.2
+0122:  GOTO   117
+0123:  MOVF   2F,W
+0124:  MOVWF  31
+0125:  MOVLW  1B
+0126:  MOVWF  32
+0127:  CALL   073
+....................          if(vel>=255){ 
+0128:  INCFSZ 2F,W
+0129:  GOTO   12E
+....................          vel=125; 
+012A:  MOVLW  7D
+012B:  MOVWF  2F
+....................          set_pwm1_duty(vel); 
+012C:  MOVF   2F,W
+012D:  MOVWF  15
+....................          } 
+....................          
+....................     } 
+....................  
+....................     if(Keypress == 's'){ 
+012E:  MOVF   28,W
+012F:  SUBLW  73
+0130:  BTFSS  03.2
+0131:  GOTO   13A
+....................          output_low(PIN_D1); 
+0132:  BSF    03.5
+0133:  BCF    08.1
+0134:  BCF    03.5
+0135:  BCF    08.1
+....................          output_low(PIN_D0); 
+0136:  BSF    03.5
+0137:  BCF    08.0
+0138:  BCF    03.5
+0139:  BCF    08.0
+....................     } 
+....................       putchar(keypress); 
+013A:  MOVF   28,W
+013B:  BTFSS  0C.4
+013C:  GOTO   13B
+013D:  MOVWF  19
+....................       keypress=0x00; 
+013E:  CLRF   28
+....................     } 
+....................     
+....................     
+....................   } 
+.................... } 
+....................    
+....................  
+....................  
+013F:  BCF    0C.5
+0140:  BCF    0A.3
+0141:  BCF    0A.4
+0142:  GOTO   023
+.................... void main(void) { 
+0143:  CLRF   04
+0144:  BCF    03.7
+0145:  MOVLW  1F
+0146:  ANDWF  03,F
+0147:  MOVLW  81
+0148:  BSF    03.5
+0149:  MOVWF  19
+014A:  MOVLW  A6
+014B:  MOVWF  18
+014C:  MOVLW  90
+014D:  BCF    03.5
+014E:  MOVWF  18
+014F:  BSF    03.5
+0150:  BSF    1F.0
+0151:  BSF    1F.1
+0152:  BSF    1F.2
+0153:  BCF    1F.3
+....................   vel=150; 
+*
+0160:  MOVLW  96
+0161:  MOVWF  2F
+....................   setup_CCP1(CCP_PWM); 
+0162:  BCF    30.2
+0163:  MOVF   30,W
+0164:  BSF    03.5
+0165:  MOVWF  07
+0166:  BCF    03.5
+0167:  BCF    07.2
+0168:  MOVLW  0C
+0169:  MOVWF  17
+....................   setup_timer_2(T2_DIV_BY_16,255,1); 
+016A:  MOVLW  00
+016B:  MOVWF  78
+016C:  IORLW  06
+016D:  MOVWF  12
+016E:  MOVLW  FF
+016F:  BSF    03.5
+0170:  MOVWF  12
+....................   set_pwm1_duty(vel); 
+0171:  BCF    03.5
+0172:  MOVF   2F,W
+0173:  MOVWF  15
+....................   output_high(PIN_B1); 
+0174:  BSF    03.5
+0175:  BCF    06.1
+0176:  BCF    03.5
+0177:  BSF    06.1
+....................    
+....................   enable_interrupts(int_rda); 
+0178:  BSF    03.5
+0179:  BSF    0C.5
+....................   enable_interrupts(global); 
+017A:  MOVLW  C0
+017B:  BCF    03.5
+017C:  IORWF  0B,F
+....................   WHILE(1){ 
+....................   } 
+017D:  GOTO   17D
+.................... } 
+....................  
+017E:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F71   XT NOWDT PUT NOPROTECT BROWNOUT NOLVP NOCPD NOWRT NODEBUG

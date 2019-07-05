@@ -1,0 +1,6 @@
+>>> Warning 203 "Motores.c" Line 96(1,1): Condition always TRUE
+>>> Warning 202 "Motores.c" Line 11(14,22): Variable never used:   contador
+>>> Warning 202 "Motores.c" Line 13(7,8): Variable never used:   x
+>>> Warning 202 "Motores.c" Line 14(7,8): Variable never used:   v
+      Memory usage:   ROM=5%      RAM=6% - 8%
+      0 Errors,  4 Warnings.

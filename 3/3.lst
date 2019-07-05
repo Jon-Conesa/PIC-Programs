@@ -1,0 +1,150 @@
+CCS PCM C Compiler, Version 4.088, 5967               10-jul-17 12:17
+
+               Filename: C:\Users\Administrator\Desktop\Programs\3\3.lst
+
+               ROM used: 85 words (1%)
+                         Largest free fragment is 2048
+               RAM used: 9 (2%) at main() level
+                         9 (2%) worst case
+               Stack:    0 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   004
+0003:  NOP
+.................... #include <16F877.h> 
+.................... //////// Standard Header file for the PIC16F877 device //////////////// 
+.................... #device PIC16F877 
+.................... #list 
+....................  
+.................... #fuses HS,NOWDT,NOPROTECT,NOLVP 
+.................... #use delay(clock=4000000) 
+.................... #use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7) 
+.................... #define DELAY_COUNTER_VALUE    10000 
+.................... #define PORTB 0x06 
+.................... #define PORTD 0x08 
+....................  
+.................... #byte DipSwitch=PORTD 
+.................... #byte LedsBar=PORTB 
+.................... #bit  Switch5=PORTD.5 
+.................... #bit  Led6=PORTB.6 
+.................... #bit  Led5=PORTB.5 
+.................... #bit  Led0=PORTB.0 
+.................... #bit  Led1=PORTB.1 
+.................... #bit  Led2=PORTB.2 
+.................... #bit  Led3=PORTB.3 
+.................... #bit  Led4=PORTB.4 
+.................... #bit  Led7=PORTB.7 
+.................... #bit  Toggle_Led= PORTB.0    
+....................  
+.................... void main(void) 
+.................... { 
+0004:  CLRF   04
+0005:  BCF    03.7
+0006:  MOVLW  1F
+0007:  ANDWF  03,F
+0008:  MOVLW  19
+0009:  BSF    03.5
+000A:  MOVWF  19
+000B:  MOVLW  A6
+000C:  MOVWF  18
+000D:  MOVLW  90
+000E:  BCF    03.5
+000F:  MOVWF  18
+0010:  BSF    03.5
+0011:  BSF    1F.0
+0012:  BSF    1F.1
+0013:  BSF    1F.2
+0014:  BCF    1F.3
+.................... unsigned long m_delay_counter=DELAY_COUNTER_VALUE; 
+0015:  MOVLW  10
+0016:  BCF    03.5
+0017:  MOVWF  21
+0018:  MOVLW  27
+0019:  MOVWF  22
+.................... int1 x=0; 
+001A:  BCF    23.0
+.................... set_tris_d(0xff); 
+001B:  MOVLW  FF
+001C:  BSF    03.5
+001D:  MOVWF  08
+.................... set_tris_b(0x00); 
+001E:  MOVLW  00
+001F:  MOVWF  06
+.................... LedsBar=0; 
+0020:  BCF    03.5
+0021:  CLRF   06
+.................... while(1) 
+.................... { 
+....................    x=Switch5;       
+0022:  BCF    23.0
+0023:  BTFSC  08.5
+0024:  BSF    23.0
+....................    Led5=x;    
+0025:  BTFSS  23.0
+0026:  BCF    06.5
+0027:  BTFSC  23.0
+0028:  BSF    06.5
+....................    Led0=x; 
+0029:  BTFSS  23.0
+002A:  BCF    06.0
+002B:  BTFSC  23.0
+002C:  BSF    06.0
+....................    Led1=x;    
+002D:  BTFSS  23.0
+002E:  BCF    06.1
+002F:  BTFSC  23.0
+0030:  BSF    06.1
+....................    Led2=x; 
+0031:  BTFSS  23.0
+0032:  BCF    06.2
+0033:  BTFSC  23.0
+0034:  BSF    06.2
+....................    Led3=x;    
+0035:  BTFSS  23.0
+0036:  BCF    06.3
+0037:  BTFSC  23.0
+0038:  BSF    06.3
+....................    Led4=x; 
+0039:  BTFSS  23.0
+003A:  BCF    06.4
+003B:  BTFSC  23.0
+003C:  BSF    06.4
+....................    Led6=x;    
+003D:  BTFSS  23.0
+003E:  BCF    06.6
+003F:  BTFSC  23.0
+0040:  BSF    06.6
+....................    Led7=x; 
+0041:  BTFSS  23.0
+0042:  BCF    06.7
+0043:  BTFSC  23.0
+0044:  BSF    06.7
+....................    m_delay_counter--; 
+0045:  MOVF   21,W
+0046:  BTFSC  03.2
+0047:  DECF   22,F
+0048:  DECFSZ 21,F
+....................    if (m_delay_counter==0) 
+0049:  GOTO   053
+004A:  MOVF   22,F
+004B:  BTFSS  03.2
+004C:  GOTO   053
+....................       { 
+....................          m_delay_counter=DELAY_COUNTER_VALUE; 
+004D:  MOVLW  27
+004E:  MOVWF  22
+004F:  MOVLW  10
+0050:  MOVWF  21
+....................          Toggle_Led=~Toggle_Led;    
+0051:  MOVLW  01
+0052:  XORWF  06,F
+....................       } 
+.................... } 
+0053:  GOTO   022
+.................... } 
+0054:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F72   HS NOWDT PUT NOPROTECT BROWNOUT NOLVP NOCPD NOWRT NODEBUG

@@ -1,0 +1,7 @@
+>>> Warning 203 "Simon.c" Line 11(1,1): Condition always TRUE
+>>> Warning 201 "Simon.c" Line 16(1,1): Assignment inside relational expression
+>>> Warning 201 "Simon.c" Line 21(1,1): Assignment inside relational expression
+>>> Warning 201 "Simon.c" Line 25(1,1): Assignment inside relational expression
+>>> Warning 201 "Simon.c" Line 29(1,1): Assignment inside relational expression
+      Memory usage:   ROM=2%      RAM=11% - 11%
+      0 Errors,  5 Warnings.

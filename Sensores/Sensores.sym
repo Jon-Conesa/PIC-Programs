@@ -1,0 +1,60 @@
+004     @WRITE_PROGRAM_MEMORY8.P1
+004-005 @READ_PROGRAM_MEMORY8.P2
+008     PSP_DATA
+015     CCP_1_LOW
+015     CCP_1_HIGH
+015     CCP_1
+01B     CCP_2_HIGH
+01B     CCP_2
+01B     CCP_2_LOW
+021     ulls.esquerra
+022     ulls.dreta
+023     @delay_ms1.P1
+023     ulls.@SCRATCH1
+024     ulls.@SCRATCH2
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+10D-10E @READ_PROGRAM_MEMORY8.P1
+10D-10E @WRITE_PROGRAM_MEMORY8.P2
+
+ROM Allocation:
+0004  @delay_ms1
+0018  ulls
+0049  MAIN
+0049  @cinit
+
+
+User Memory space: 
+
+Project Directory:
+    C:\Users\RR JC\Desktop\Programs\Sensores\
+
+Project Files:
+    Sensores.c
+    ..\..\..\..\..\Program Files (x86)\PICC\devices\16F877.h
+
+Units:
+    C:\Users\RR JC\Desktop\Programs\Sensores\Sensores.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F877
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      Sensores.err
+    Ext Symbols: Sensores.esym
+    INHX8:       Sensores.hex
+    Symbols:     Sensores.sym
+    List:        Sensores.lst
+    Debug/COFF:  Sensores.cof
+    Project:     Sensores.PJT
+    Call Tree:   Sensores.tre
+    Statistics:  Sensores.sta

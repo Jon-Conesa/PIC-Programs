@@ -1,0 +1,4 @@
+>>> Warning 203 "4.c" Line 32(1,1): Condition always TRUE
+>>> Warning 202 "4.c" Line 21(9,10): Variable never used:   x
+      Memory usage:   ROM=2%      RAM=6% - 6%
+      0 Errors,  2 Warnings.
